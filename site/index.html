@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARVIN — Personal AI Assistant</title>
+<meta name="description" content="A real-time voice AI that can hear, see, speak and control your computer. Built on the Gemini Live API.">
+<style>
+  :root {
+    --bg: #05080d; --panel: #0b121b; --line: #16324a; --text: #d7e6f2;
+    --muted: #7d93a8; --accent: #29c6ff; --accent-dim: rgba(41,198,255,.12);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding-inline: 20px; }
+  a { color: var(--accent); }
+  header { padding-block: 96px 72px; text-align: center;
+    background: radial-gradient(ellipse at 50% 0%, rgba(41,198,255,.18), transparent 60%); }
+  .reactor { width: 88px; height: 88px; margin: 0 auto 28px; border-radius: 50%;
+    border: 2px solid var(--accent); box-shadow: 0 0 40px var(--accent), inset 0 0 24px var(--accent);
+    display: grid; place-items: center; }
+  .reactor::after { content: ""; width: 34px; height: 34px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 30px var(--accent); }
+  h1 { font-size: clamp(2.4rem, 7vw, 4rem); letter-spacing: .18em; margin: 0; }
+  .tag { color: var(--muted); font-size: 1.15rem; max-width: 620px; margin: 16px auto 36px; }
+  .btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn { padding: 13px 26px; border-radius: 8px; text-decoration: none; font-weight: 600;
+    border: 1px solid var(--accent); }
+  .btn.primary { background: var(--accent); color: #031018; }
+  .btn.ghost { color: var(--accent); background: var(--accent-dim); }
+  .note { color: var(--muted); font-size: .85rem; margin-top: 14px; }
+  section { padding-block: 64px; border-top: 1px solid var(--line); }
+  h2 { font-size: 1.6rem; margin: 0 0 28px; letter-spacing: .04em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 20px; }
+  .card h3 { margin: 0 0 6px; font-size: 1.05rem; color: var(--accent); }
+  .card p { margin: 0; color: var(--muted); font-size: .95rem; }
+  ol.steps { padding-left: 1.2em; }
+  ol.steps li { margin-bottom: 14px; }
+  pre { background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+    padding: 14px 16px; overflow-x: auto; font-size: .9rem; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  footer { padding-block: 32px; text-align: center; color: var(--muted); font-size: .85rem;
+    border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="reactor"></div>
+    <h1>ARVIN</h1>
+    <p class="tag">A real-time voice AI that can hear, see, speak and control your computer. Built on the Gemini Live API. No subscription: bring your own free Gemini key.</p>
+    <div class="btns">
+      <a class="btn primary" href="https://github.com/Nishchay869/ARVIN-Personal-Assistant/releases/latest/download/ARVIN-windows-x64.zip">Windows</a>
+      <a class="btn primary" href="https://github.com/Nishchay869/ARVIN-Personal-Assistant/releases/latest/download/ARVIN-mac-apple-silicon.zip">macOS · Apple Silicon</a>
+      <a class="btn primary" href="https://github.com/Nishchay869/ARVIN-Personal-Assistant/releases/latest/download/ARVIN-mac-intel.zip">macOS · Intel</a>
+      <a class="btn primary" href="https://github.com/Nishchay869/ARVIN-Personal-Assistant/releases/latest/download/ARVIN-linux-x64.tar.gz">Linux</a>
+    </div>
+    <p class="note">Phone or tablet? ARVIN runs on your computer, and your phone becomes its remote. See below. · <a href="https://github.com/Nishchay869/ARVIN-Personal-Assistant">View on GitHub</a></p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>What it does</h2>
+    <div class="grid">
+      <div class="card"><h3>Real-time voice</h3><p>Low-latency conversation in any language through Gemini 3.1 Flash Live.</p></div>
+      <div class="card"><h3>Controls your computer</h3><p>Launches apps, manages files, drives the browser, and adjusts volume, brightness and WiFi by voice.</p></div>
+      <div class="card"><h3>Sees your screen</h3><p>Screen capture and webcam vision go straight into the conversation.</p></div>
+      <div class="card"><h3>Holographic avatar</h3><p>An animated head in the HUD with real lip-sync, blinking and gaze.</p></div>
+      <div class="card"><h3>Remembers you</h3><p>Persistent memory you can inspect and delete from the memory panel.</p></div>
+      <div class="card"><h3>Undo &amp; real confirmation</h3><p>Take back file moves and setting changes. Shutdown and restart wait for a button you press.</p></div>
+      <div class="card"><h3>Video on the HUD</h3><p>Plays YouTube, a local file or any URL where the avatar sits, muted until you ask for sound.</p></div>
+      <div class="card"><h3>Wake word</h3><p>Local, offline wake-word detection. It never streams audio while asleep.</p></div>
+      <div class="card"><h3>Plugins</h3><p>Drop a single <code>.py</code> file into the plugins folder and ARVIN learns a new skill.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Install</h2>
+    <div class="grid">
+      <div class="card"><h3>Windows 10 / 11</h3><p>Unzip, open the <code>ARVIN</code> folder and run <code>ARVIN.exe</code>. If SmartScreen warns you, click <strong>More info → Run anyway</strong>.</p></div>
+      <div class="card"><h3>macOS</h3><p>Unzip and move <code>ARVIN.app</code> to Applications. The first time, <strong>right-click → Open</strong>. Allow Microphone and, if you like, Screen Recording and Accessibility.</p></div>
+      <div class="card"><h3>Linux</h3><p><code>tar -xzf ARVIN-linux-x64.tar.gz</code>, then run <code>ARVIN/ARVIN</code>. Needs PortAudio: <code>sudo apt install libportaudio2</code>.</p></div>
+    </div>
+    <p>Then get a free API key from <a href="https://aistudio.google.com/apikey">Google AI Studio</a> and paste it into the setup screen.</p>
+    <p class="note">Your key, settings and memory stay on your computer, in Application Support (macOS), %APPDATA% (Windows) or ~/.local/share (Linux).</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>On your phone or tablet</h2>
+    <p>ARVIN controls a computer, so it runs on one. Your iPhone, Android phone or tablet becomes its remote: in ARVIN, press <strong>Remote Control</strong> and scan the QR code. You can talk to ARVIN and send it files from your phone over your home WiFi. Nothing to install.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Run from source (Windows, Linux, macOS)</h2>
+    <pre><code>git clone https://github.com/Nishchay869/ARVIN-Personal-Assistant.git
+cd ARVIN-Personal-Assistant
+python setup.py
+python main.py</code></pre>
+    <p class="note">Requires Python 3.11–3.13 and a microphone.</p>
+  </div>
+</section>
+
+<footer>ARVIN · open source on <a href="https://github.com/Nishchay869/ARVIN-Personal-Assistant">GitHub</a></footer>
+</body>
+</html>

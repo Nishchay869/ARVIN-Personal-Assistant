@@ -1,8 +1,11 @@
 # config/__init__.py
-import json, os, platform
+import json, os, platform, sys
 from pathlib import Path
 
-_CONFIG_PATH = Path(__file__).parent / "api_keys.json"
+if getattr(sys, "frozen", False):
+    _CONFIG_PATH = Path(sys.executable).parent / "config" / "api_keys.json"
+else:
+    _CONFIG_PATH = Path(__file__).parent / "api_keys.json"
 
 def _platform_os() -> str:
     """Auto-detect OS when config file is absent."""

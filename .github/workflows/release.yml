@@ -1,0 +1,82 @@
+# Builds ARVIN for every desktop OS and attaches the builds to a GitHub Release.
+# Trigger: push a version tag, e.g.
+#     git tag v1.0.0 && git push origin v1.0.0
+# or run it by hand from the Actions tab (builds only, no release).
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            asset: ARVIN-windows-x64.zip
+          - os: macos-14          # Apple Silicon (M1 and newer)
+            asset: ARVIN-mac-apple-silicon.zip
+          - os: macos-15-intel    # Intel Macs
+            asset: ARVIN-mac-intel.zip
+          - os: ubuntu-22.04      # older glibc, so the build runs on more distros
+            asset: ARVIN-linux-x64.tar.gz
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Linux system libraries
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libportaudio2 libxcb-cursor0 libxkbcommon-x11-0 libegl1
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller
+
+      - name: Build
+        run: pyinstaller --noconfirm packaging/ARVIN.spec
+
+      - name: Package (macOS)
+        if: runner.os == 'macOS'
+        run: ditto -c -k --keepParent dist/ARVIN.app "${{ matrix.asset }}"
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        run: Compress-Archive -Path dist/ARVIN -DestinationPath "${{ matrix.asset }}"
+
+      - name: Package (Linux)
+        if: runner.os == 'Linux'
+        run: tar -czf "${{ matrix.asset }}" -C dist ARVIN
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset }}
+          path: ${{ matrix.asset }}
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: assets
+          merge-multiple: true
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: assets/*
+          generate_release_notes: true
